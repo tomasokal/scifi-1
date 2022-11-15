@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/scifi-1/static/css/main.ca920fa5.css",
+    "main.js": "/scifi-1/static/js/main.166a892c.js",
+    "index.html": "/scifi-1/index.html",
+    "main.ca920fa5.css.map": "/scifi-1/static/css/main.ca920fa5.css.map",
+    "main.166a892c.js.map": "/scifi-1/static/js/main.166a892c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ca920fa5.css",
+    "static/js/main.166a892c.js"
+  ]
+}

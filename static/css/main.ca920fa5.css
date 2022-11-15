@@ -1,0 +1,2 @@
+#root,body,html{background:ivory}#root,.interface,body,html{height:100%;left:0;position:fixed;top:0;width:100%}.interface{font-family:Orbitron;pointer-events:none}.controls{bottom:10%;left:0;position:absolute;width:100%}.controls .raw{display:flex;justify-content:center}.controls .key{background:#ffffff44;border:2px solid #fff;border-radius:15px;font-size:1.5rem;height:30px;line-height:30px;margin:5px;text-align:center;width:60px}.controls .key.large{width:210px}.controls .key.active{background:#ffffff99}
+/*# sourceMappingURL=main.ca920fa5.css.map*/
