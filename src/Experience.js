@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { OrbitControls, useTexture } from '@react-three/drei'
-import { Physics, RigidBody } from '@react-three/rapier'
+import { Debug, Physics, RigidBody } from '@react-three/rapier'
 
 import Lights from './Lights.js'
 import PlayerCapsule from './PlayerCapsule.js'
@@ -17,6 +17,8 @@ export default function Experience()
         <Lights />
 
         <Physics>
+
+            <Debug />
 
             <group>
 
