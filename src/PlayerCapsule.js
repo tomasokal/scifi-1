@@ -62,26 +62,29 @@ export default function PlayerCapsule()
     })
 
     // Player capsule frame update
-
     useFrame((state, delta) =>
     {
-
+        
         const { forward, backward, leftward, rightward } = getKeys()
+
+        const t = state.clock.elapsedTime
+        // console.log(state.clock)
 
         const impulse = { x: 0, y: 0, z: 0 }
         const torque = { x: 0, y: 0, z: 0 }
 
         const impulseStrength = 100 * delta
-        const torqueStrength = 100 * delta
+        const torqueStrength = 50 * delta
+
+        const capsuleDirection = new THREE.Vector3( 0, 0, 1 )
+        capsuleDirection.applyQuaternion( capsule.current.rotation() )
+
+        const impulseCartesian = { x: 0, y: 0, z: 0 }
 
         if(forward)
         {
-            impulse.x += impulseStrength
-        }
-
-        if(backward)
-        {
-            impulse.x -= impulseStrength
+            impulseCartesian.z -= capsuleDirection.x * impulseStrength
+            impulseCartesian.x += capsuleDirection.z * impulseStrength
         }
 
         if(leftward)
@@ -94,27 +97,25 @@ export default function PlayerCapsule()
             torque.y -= torqueStrength
         }
 
-        capsule.current.applyImpulse(impulse)
+        capsule.current.applyImpulse(impulseCartesian)
         capsule.current.applyTorqueImpulse(torque)
-
-        console.log(capsule.current.rotation().y)
 
     })
 
     return <>
         <RigidBody 
             ref={ capsule } 
+            colliders= { false }
+            mass={ 2 }
+            gravityScale={ 0 }
             restitution={ 0.2 } 
             friction={ 1 } 
             linearDamping={ 0.5 }
-            angularDamping={ 0.5 }
+            angularDamping={ 0.75 }
             position={ [ 0, 2, 0 ] }
-            gravityScale={ 0 }
+            rotation={ [ 0, 0, Math.PI / 2 ] }
         >
-            <mesh 
-                castShadow 
-                rotation-z={ [ Math.PI / 2 ] } 
-            >
+            <mesh castShadow >
                 <capsuleGeometry args={ [ 1, 2, 32, 64 ] } />
                 <meshStandardMaterial 
                     color={ '#244554'} 
@@ -122,6 +123,9 @@ export default function PlayerCapsule()
                     metalness={0.1} 
                 />
             </mesh>
+            <CapsuleCollider 
+                args={ [ 1.3, 1.3, 1.3 ] } 
+            />
         </RigidBody>
     </>
 
