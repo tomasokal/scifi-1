@@ -1,4 +1,4 @@
-import { useKeyboardControls } from '@react-three/drei'
+import { Trail, useKeyboardControls } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { CapsuleCollider, RigidBody, useRapier } from '@react-three/rapier'
 import { useEffect, useRef } from 'react'
@@ -6,7 +6,7 @@ import * as THREE from 'three'
 
 export default function PlayerCapsule()
 {
-    
+
     // Set up for player capsule
     const capsule = useRef()
 
@@ -67,7 +67,7 @@ export default function PlayerCapsule()
         
         const { forward, backward, leftward, rightward } = getKeys()
 
-        const t = state.clock.elapsedTime
+        const t = state.clock.getElapsedTime() * 6
         // console.log(state.clock)
 
         const impulse = { x: 0, y: 0, z: 0 }
@@ -103,30 +103,40 @@ export default function PlayerCapsule()
     })
 
     return <>
-        <RigidBody 
-            ref={ capsule } 
-            colliders= { false }
-            mass={ 2 }
-            gravityScale={ 0 }
-            restitution={ 0.2 } 
-            friction={ 1 } 
-            linearDamping={ 0.5 }
-            angularDamping={ 0.75 }
-            position={ [ 0, 2, 0 ] }
-            rotation={ [ 0, 0, Math.PI / 2 ] }
+        <Trail
+            width={2}
+            length={12}
+            color={'#F8D628'}
+            attenuation={(t) => {
+                return t * t
+            }}
         >
-            <mesh castShadow >
-                <capsuleGeometry args={ [ 1, 2, 32, 64 ] } />
-                <meshStandardMaterial 
-                    color={ '#244554'} 
-                    roughness={0} 
-                    metalness={0.1} 
+            <RigidBody 
+                ref={ capsule } 
+                colliders= { false }
+                mass={ 2 }
+                gravityScale={ 0 }
+                restitution={ 0.2 } 
+                friction={ 1 } 
+                linearDamping={ 0.5 }
+                angularDamping={ 0.75 }
+                position={ [ 0, 2, 0 ] }
+                rotation={ [ 0, 0, Math.PI / 2 ] }
+                linearFactor={ [1, 1, 0] }
+            >
+                <mesh castShadow >
+                    <capsuleGeometry args={ [ 1, 2, 32, 64 ] } />
+                    <meshStandardMaterial 
+                        color={ '#244554'} 
+                        roughness={0} 
+                        metalness={0.1} 
+                    />
+                </mesh>
+                <CapsuleCollider 
+                    args={ [ 1.3, 1.3, 1.3 ] } 
                 />
-            </mesh>
-            <CapsuleCollider 
-                args={ [ 1.3, 1.3, 1.3 ] } 
-            />
-        </RigidBody>
+            </RigidBody>
+        </Trail>
     </>
 
 }
