@@ -18,7 +18,7 @@ export default function Experience()
 
         <Physics>
 
-            <Debug />
+            {/* <Debug /> */}
 
             <group>
 
@@ -42,7 +42,7 @@ export default function Experience()
 
                 <mesh 
                     position={ [ 0, -0.1, 0 ] }
-                    scale={ [ 10, 0.2, 10 ] } 
+                    scale={ [ 100, 0.2, 100 ] } 
                     receiveShadow 
                 >
                     <boxGeometry />
