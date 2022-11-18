@@ -6,7 +6,7 @@ export default function Lights()
 {
 
     const ref = useRef()
-    useHelper(ref, DirectionalLightHelper, 5)
+    // useHelper(ref, DirectionalLightHelper, 5)C
 
     return <>
 
