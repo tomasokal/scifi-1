@@ -1,7 +1,7 @@
 import { Trail, useKeyboardControls } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { CapsuleCollider, RigidBody, useRapier } from '@react-three/rapier'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 
 export default function PlayerCapsule()
@@ -13,6 +13,10 @@ export default function PlayerCapsule()
     // Set up for physics
     const { rapier, world } = useRapier()
     const rapierWorld = world.raw()
+
+    // Camera references
+    const [ smoothedCameraPosition ] = useState(() => new THREE.Vector3(10, 10, 10))
+    const [ smoothedCameraTarget ] = useState(() => new THREE.Vector3())
 
     // Set up for keyboard controls
     const [ subscribeKeys, getKeys ] = useKeyboardControls()
@@ -100,6 +104,24 @@ export default function PlayerCapsule()
         capsule.current.applyImpulse(impulseCartesian)
         capsule.current.applyTorqueImpulse(torque)
 
+        // Set camera to follow capsule
+        const capsulePosition = capsule.current.translation()
+
+        const cameraPosition = new THREE.Vector3()
+        cameraPosition.copy(capsulePosition)
+        cameraPosition.z += 25
+        cameraPosition.y += 15
+
+        const cameraTarget = new THREE.Vector3()
+        cameraTarget.copy(capsulePosition)
+        cameraTarget.y += 0.25
+
+        smoothedCameraPosition.lerp(cameraPosition, 5 * delta)
+        smoothedCameraTarget.lerp(cameraTarget, 5 * delta)
+
+        state.camera.position.copy(smoothedCameraPosition)
+        state.camera.lookAt(smoothedCameraTarget)
+
     })
 
     return <>
@@ -122,7 +144,7 @@ export default function PlayerCapsule()
                 angularDamping={ 0.75 }
                 position={ [ 0, 2, 0 ] }
                 rotation={ [ 0, 0, Math.PI / 2 ] }
-                linearFactor={ [1, 1, 0] }
+                // enabledRotations={ false }
             >
                 <mesh castShadow >
                     <capsuleGeometry args={ [ 1, 2, 32, 64 ] } />
@@ -132,6 +154,14 @@ export default function PlayerCapsule()
                         metalness={0.1} 
                     />
                 </mesh>
+                {/* <mesh position={ [-1, 0, 0 ]} castShadow >
+                    <sphereGeometry/>
+                    <meshStandardMaterial 
+                        color={ '#244554'} 
+                        roughness={0} 
+                        metalness={0.1} 
+                    />
+                </mesh> */}
                 <CapsuleCollider 
                     args={ [ 1.3, 1.3, 1.3 ] } 
                 />
